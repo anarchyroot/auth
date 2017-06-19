@@ -29,5 +29,6 @@ def register(request):
 
     return render(request, 'register.html', args)
 
+
 def profile(request):
     return render(request, 'profile.html')
