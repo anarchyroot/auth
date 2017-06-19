@@ -1,10 +1,9 @@
-from django.db import models
-
 # Create your models here.
+from cProfile import Profile
 
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.db import models
 from django.utils import timezone
+import datetime
 
 
 class AccountUserManager(UserManager):
@@ -21,7 +20,7 @@ class AccountUserManager(UserManager):
         user = self.model(username=email, email=email,
                           is_staff=is_staff, is_active=True,
                           is_superuser=is_superuser,
-                          date_joined=now, **extra_fields)
+                          date_joined=now, last_login=timezone.now(self))
         user.set_password(password)
         user.save(using=self._db)
 
@@ -31,7 +30,6 @@ class AccountUserManager(UserManager):
 class User(AbstractUser):
     # now that we've abstracted this class we can add any
     # number of custom attribute to our user class
-
     # in later units we'll be adding things like payment details!
 
     objects = AccountUserManager()
